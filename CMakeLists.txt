@@ -349,36 +349,6 @@ else ()
 endif ()
 
 #--------------------------------------------------------------------------
-# Gstreamer (also requires udev)
-#--------------------------------------------------------------------------
-find_package(GStreamer ${GSTREAMER_MIN_VERSION})
-find_package(Udev)
-if (NOT GST_FOUND OR NOT UDEV_FOUND)
-    if (NOT GST_FOUND)
-        message("WW GStreamer >= ${GSTREAMER_MIN_VERSION} NOT FOUND: some video components disabled. Please install package gstreamer to enable.")
-        SET_EMPTY_DEPENDENCY(GSTREAMER)
-    endif ()
-    if (NOT UDEV_FOUND)
-        message("WW libudev NOT FOUND, Gstreamer video disabled. Please install package libudev-dev to enable.")
-        SET_EMPTY_DEPENDENCY(UDEV)
-    endif ()
-else ()
-    SET_CONFIG_VAR (HAVE_GSTREAMER)
-    set (OF_PKGCONF_DEPENDS ${OF_PKGCONF_DEPENDS} "gstreamer")
-    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${GST_INCLUDE_DIRS})
-    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${GST_LIBRARIES})
-    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${GST_CFLAGS} -DOF_VIDEO_PLAYER_GSTREAMER -DOF_VIDEO_CAPTURE_GSTREAMER)
-    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${GST_LDFLAGS})
-    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${GST_LIBRARY_DIRS})
-    SET_CONFIG_VAR (HAVE_UDEV)
-    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${UDEV_INCLUDE_DIRS})
-    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${UDEV_LIBRARIES})
-    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${UDEV_CFLAGS})
-    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${UDEV_LDFLAGS})
-    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${UDEV_LIBRARY_DIRS})
-endif ()
-
-#--------------------------------------------------------------------------
 # Freetype
 #--------------------------------------------------------------------------
 find_package(Freetype)
@@ -658,24 +628,6 @@ else ()
     set (OF_PKGCONF_DEPENDS ${OF_PKGCONF_DEPENDS} "assimp")
 endif ()
 
-
-#--------------------------------------------------------------------------
-# Cairo (new in oF 0.07) - optional
-#--------------------------------------------------------------------------
-find_package(Cairo ${CAIRO_MIN_VERSION})
-if (NOT CAIRO_FOUND)
-    message("WW Cairo NOT FOUND. Please install packages (e.g. cairo)")
-    SET_EMPTY_DEPENDENCY(CAIRO)
-else ()
-    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${CAIRO_INCLUDE_DIRS})
-    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${CAIRO_LIBRARIES})
-    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${CAIRO_CFLAGS})
-    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${CAIRO_LDFLAGS})
-    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${CAIRO_LIBRARY_DIRS})
-    SET_CONFIG_VAR (HAVE_CAIRO)
-    set (OF_PKGCONF_DEPENDS ${OF_PKGCONF_DEPENDS} "cairo")
-endif ()
-
 #--------------------------------------------------------------------------
 # Tess2 (new in oF 0.07)
 #--------------------------------------------------------------------------
@@ -892,6 +844,52 @@ else ()
 
 endif ()
 
+#--------------------------------------------------------------------------
+# Cairo (new in oF 0.07) - optional
+#--------------------------------------------------------------------------
+find_package(Cairo ${CAIRO_MIN_VERSION})
+if (NOT CAIRO_FOUND)
+    message("WW Cairo NOT FOUND. Please install packages (e.g. cairo)")
+    SET_EMPTY_DEPENDENCY(CAIRO)
+else ()
+    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${CAIRO_INCLUDE_DIRS})
+    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${CAIRO_LIBRARIES})
+    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${CAIRO_CFLAGS})
+    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${CAIRO_LDFLAGS})
+    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${CAIRO_LIBRARY_DIRS})
+    SET_CONFIG_VAR (HAVE_CAIRO)
+    set (OF_PKGCONF_DEPENDS ${OF_PKGCONF_DEPENDS} "cairo")
+endif ()
+
+#--------------------------------------------------------------------------
+# Gstreamer (also requires udev)
+#--------------------------------------------------------------------------
+find_package(GStreamer ${GSTREAMER_MIN_VERSION})
+find_package(Udev)
+if (NOT GST_FOUND OR NOT UDEV_FOUND)
+    if (NOT GST_FOUND)
+        message("WW GStreamer >= ${GSTREAMER_MIN_VERSION} NOT FOUND: some video components disabled. Please install package gstreamer to enable.")
+        SET_EMPTY_DEPENDENCY(GSTREAMER)
+    endif ()
+    if (NOT UDEV_FOUND)
+        message("WW libudev NOT FOUND, Gstreamer video disabled. Please install package libudev-dev to enable.")
+        SET_EMPTY_DEPENDENCY(UDEV)
+    endif ()
+else ()
+    SET_CONFIG_VAR (HAVE_GSTREAMER)
+    set (OF_PKGCONF_DEPENDS ${OF_PKGCONF_DEPENDS} "gstreamer")
+    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${GST_INCLUDE_DIRS})
+    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${GST_LIBRARIES})
+    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${GST_CFLAGS} -DOF_VIDEO_PLAYER_GSTREAMER -DOF_VIDEO_CAPTURE_GSTREAMER)
+    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${GST_LDFLAGS})
+    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${GST_LIBRARY_DIRS})
+    SET_CONFIG_VAR (HAVE_UDEV)
+    set (OF_CORE_INCLUDES ${OF_CORE_INCLUDES} ${UDEV_INCLUDE_DIRS})
+    set (OF_CORE_LIBS ${OF_CORE_LIBS} ${UDEV_LIBRARIES})
+    set (OF_CORE_CFLAGS ${OF_CORE_CFLAGS} ${UDEV_CFLAGS})
+    set (OF_CORE_LDFLAGS ${OF_CORE_LDFLAGS} ${UDEV_LDFLAGS})
+    set (OF_CORE_LIBDIRS ${OF_CORE_LIBDIRS} ${UDEV_LIBRARY_DIRS})
+endif ()
 
 #--------------------------------------------------------------------------
 #   FAIL on serious error (when required library dependency is not present)
