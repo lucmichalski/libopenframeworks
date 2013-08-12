@@ -20,23 +20,18 @@
 #
 
 pkgname=fmodex
-pkgver=4.42.06
-urlbase=http://www.fmod.org/index.php/release/version
+pkgver=4.44.19
+urlbase=http://www.fmod.org/download/fmodex/api
 
 precond() {
     case ${TARGET_SYSTEM} in
     Darwin)
         archive=fmodapi${pkgver//./}mac-installer.dmg
-        url=${urlbase}/${archive}
+        url=${urlbase}/Mac/${archive}
         ;;
     Linux)
-        if [ "$TARGET_ARCH" == "x86_64" ]; then
-            archive=fmodapi${pkgver//./}linux64.tar.gz
-            url=${urlbase}/${archive}
-        else
-            archive=fmodapi${pkgver//./}linux.tar.gz
-            url=${urlbase}/${archive}
-        fi
+        archive=fmodapi${pkgver//./}linux.tar.gz
+        url=${urlbase}/Linux/${archive}
         ;;
     *)
         error_msg="${pkgname} not supported on ${TARGET_SYSTEM}"
